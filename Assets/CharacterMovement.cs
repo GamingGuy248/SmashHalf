@@ -13,11 +13,18 @@ public class CharacterMovement : MonoBehaviour
     void Update()
     {   
 
-        float x = Input.GetAxis("Horizontal")
-        float z = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 direction = new Vector3(-vertical, 0f, horizontal).normalized;
 
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
+        if (direction.magnitude >= 0.1f)
+        {
+            if(controller.transform.position.x >= 19.5 && vertical < 0) {
+                direction = new Vector3(0f, 0f, horizontal).normalized;
+            }
+
+            controller.Move(direction * speed * Time.deltaTime);
+        }
 
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
